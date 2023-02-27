@@ -12,6 +12,31 @@ class SinglyLinkedList {
     this.length = 0;
   }
 
+  get(index) {
+    if (index < 0 || index >= this.length) return null;
+
+    let currIndex = 0;
+    let currNode = this.head;
+    while (currIndex < index && currNode) {
+      currNode = currNode.next;
+      currIndex++;
+    }
+
+    return currNode;
+  }
+
+  set(index, value) {
+    const node = this.get(index);
+
+    if (!node) {
+      return undefined;
+    }
+
+    node.value = value;
+
+    return node;
+  }
+
   push(value) {
     const node = new Node(value);
 
@@ -32,14 +57,29 @@ class SinglyLinkedList {
 
   pop() {
     if (!this.head) return undefined;
-    let nodeI = this.head;
 
-    while (nodeI.next.next) {
-      nodeI = nodeI.next;
+    const beforeTailNode = this.get(this.length - 2);
+
+    const popedNode = beforeTailNode.next;
+
+    beforeTailNode.next = null;
+
+    this.tail = beforeTailNode;
+
+    if (this.length === 0) {
+      this.tail = null;
+      this.head = null;
     }
-    const popedNode = nodeI.next;
-    nodeI.next = null;
-    this.tail = nodeI;
+
+    return popedNode;
+  }
+
+  shift() {
+    if (!this.head) return undefined;
+    const currNode = this.head;
+    this.head = currNode.next;
+
+    currNode.next = null;
     this.length--;
 
     if (this.length === 0) {
@@ -47,7 +87,22 @@ class SinglyLinkedList {
       this.tail = null;
     }
 
-    return popedNode;
+    return currNode;
+  }
+
+  unshift(value) {
+    const node = new Node(value);
+
+    if (!this.head) {
+      this.head = node;
+      this.tail = this.head;
+    } else {
+      node.next = this.head;
+      this.head = node;
+    }
+
+    this.length++;
+    return this;
   }
 
   print() {
@@ -67,15 +122,7 @@ sLinkedList.push('I');
 sLinkedList.push('am');
 sLinkedList.push('Rafael');
 
-console.log(sLinkedList.length);
-
 sLinkedList.print();
+console.log('=======================================');
 
-sLinkedList.pop();
-sLinkedList.pop();
-sLinkedList.pop();
-sLinkedList.pop();
-sLinkedList.pop();
-
-console.log(sLinkedList.length);
-sLinkedList.print();
+console.log(sLinkedList.get(5)?.value);
