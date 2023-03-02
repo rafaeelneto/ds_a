@@ -112,17 +112,44 @@ class SinglyLinkedList {
       node = node.next;
     }
   }
+
+  sum() {
+    let sum = 0;
+    let node = this.head;
+    while (node) {
+      sum += node.value;
+      node = node.next;
+    }
+    return sum;
+  }
 }
 
-const sLinkedList = new SinglyLinkedList();
+var maxSubArray = function (nums) {
+  const sLinkedList = new SinglyLinkedList();
+  for (let i = 0; i < nums.length; i++) {
+    sLinkedList.push(nums[i]);
+  }
 
-sLinkedList.push('Hello');
-sLinkedList.push('World');
-sLinkedList.push('I');
-sLinkedList.push('am');
-sLinkedList.push('Rafael');
+  const wholeSum = sLinkedList.sum();
 
-sLinkedList.print();
-console.log('=======================================');
+  let i = 0;
+  let j = sLinkedList.length - 1;
+  let maxSum = wholeSum;
+  while (i < j) {
+    if (maxSum - sLinkedList.head.value > maxSum) {
+      maxSum -= sLinkedList.head.value;
+      sLinkedList.shift;
+      i++;
+    }
 
-console.log(sLinkedList.get(5)?.value);
+    if (maxSum - sLinkedList.tail.value > maxSum) {
+      maxSum -= sLinkedList.tail.value;
+      sLinkedList.pop();
+      j--;
+    }
+  }
+  return maxSum;
+};
+
+// console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+console.log(maxSubArray([-2, -1, -3, 4, -1, 2, 1, -5, -4])); // 6
