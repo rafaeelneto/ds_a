@@ -1,33 +1,23 @@
 var maxSubArray = function (nums) {
   let maxSum = nums[0];
-  let i = 0;
-  let j = 0;
 
-  let currSum = maxSum;
+  let currSum = nums[0];
 
-  while (j < nums.length) {
-    const element = nums[j];
-    currSum = currSumRight + element;
-
-    if (maxSum > maxSum - nums[i]) {
-      maxSum -= nums[i];
-      i++;
+  for (let i = 1; i < nums.length; i++) {
+    if (currSum < 0) {
+      currSum = 0;
     }
-
+    currSum += nums[i];
     maxSum = Math.max(currSum, maxSum);
-
-    j++;
   }
-
-  console.log({ i, j });
 
   return maxSum;
 };
 
-console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
-console.log(maxSubArray([-2, -1, -3]));
-console.log(maxSubArray([-1, 1, 2, 1]));
-console.log(maxSubArray([3, -2, -3, -3, 1, 3, 0]));
+console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4])); // 6
+console.log(maxSubArray([-2, -1, -3])); // 0
+console.log(maxSubArray([-1, 1, 2, 1])); // 4
+console.log(maxSubArray([3, -2, -3, -3, 1, 3, 0])); // 0
 
 // var maxSubArray = function (nums) {
 //   let maxNumber = nums[0];
