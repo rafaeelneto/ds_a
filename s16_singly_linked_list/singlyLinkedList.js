@@ -66,6 +66,7 @@ class SinglyLinkedList {
 
     this.tail = beforeTailNode;
 
+    this.length--;
     if (this.length === 0) {
       this.tail = null;
       this.head = null;
@@ -136,20 +137,36 @@ var maxSubArray = function (nums) {
   let j = sLinkedList.length - 1;
   let maxSum = wholeSum;
   while (i < j) {
-    if (maxSum - sLinkedList.head.value > maxSum) {
-      maxSum -= sLinkedList.head.value;
-      sLinkedList.shift;
-      i++;
-    }
+    console.log(sLinkedList.head.value);
+    console.log(sLinkedList.tail.value);
 
-    if (maxSum - sLinkedList.tail.value > maxSum) {
-      maxSum -= sLinkedList.tail.value;
+    const withoutLeft = maxSum - sLinkedList.head.value;
+    const withoutRight = maxSum - sLinkedList.tail.value;
+    const withoutBoth =
+      maxSum - sLinkedList.head.value - sLinkedList.tail.value;
+
+    maxSum = Math.max(withoutLeft, withoutRight, withoutBoth, maxSum);
+
+    if (maxSum === withoutLeft) {
+      sLinkedList.shift();
+    }
+    if (maxSum === withoutRight) {
       sLinkedList.pop();
+    }
+    if (maxSum === withoutBoth) {
+      sLinkedList.shift();
+      sLinkedList.pop();
+      i++;
       j--;
     }
+
+    i++;
+    j--;
+
+    console.log({ maxSum });
   }
   return maxSum;
 };
 
-// console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
 console.log(maxSubArray([-2, -1, -3, 4, -1, 2, 1, -5, -4])); // 6
